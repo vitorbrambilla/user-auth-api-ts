@@ -1,0 +1,1 @@
+An api with typescript that authenticates the users
