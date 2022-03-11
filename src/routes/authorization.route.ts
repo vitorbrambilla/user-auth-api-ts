@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import ForbiddenError from '../models/errors/forbidden.error.model';
 import userRepository from '../repositories/user.repository';
-import JWT from 'jsonwebtoken';
+import JWT, { SignOptions } from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import basicAuthenticationMiddleware from '../middlewares/basic-authentication.middleware';
+import jwtAuthentication from '../middlewares/jwt-authentication.middleware';
+import { SigningOptions } from 'crypto';
 
 const authorizationRoute = Router();
 
@@ -16,7 +18,7 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
     }
 
     const jwtPayLoad = { username: user.username };
-    const jwtOptions = { subject: user?.uuid };
+    const jwtOptions: SignOptions = { subject: user?.uuid, expiresIn: '15m' };
     const secretKey = 'my_secret_key';
 
     const jwt = JWT.sign(jwtPayLoad, secretKey, jwtOptions);
@@ -26,6 +28,10 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
   } catch (error) {
     next(error);
   }
+});
+
+authorizationRoute.post('/token/validate', jwtAuthentication, (req: Request, res: Response, next: NextFunction) => {
+  res.sendStatus(StatusCodes.OK);
 });
 
 export default authorizationRoute;
