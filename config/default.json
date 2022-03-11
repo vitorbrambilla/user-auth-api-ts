@@ -1,0 +1,9 @@
+{
+  "database": {
+    "url": "postgres://azazjtta:a__liJuz46UPNmaufPFxVpHCyKHNcBPP@tuffi.db.elephantsql.com/azazjtta"
+  },
+  "authentication": {
+    "cryptKey": "my_salt"
+  }
+
+}

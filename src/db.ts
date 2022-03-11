@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
+import config from 'config';
 
-const connectionString = 'postgres://azazjtta:a__liJuz46UPNmaufPFxVpHCyKHNcBPP@tuffi.db.elephantsql.com/azazjtta';
+const connectionString = config.get<string>('database.url');
 
 const db = new Pool({ connectionString });
 
